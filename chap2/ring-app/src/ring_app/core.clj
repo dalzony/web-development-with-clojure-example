@@ -11,9 +11,14 @@
 ;;  :headers {"Content-Type" "text/html"}
 ;;  :body }
 
+(defn wrap-nocache [handler]
+  (fn [request]
+    (-> request
+        handler
+        (assoc-in [:headers "Pragma"] "no-cache"))))
 
 (defn -main []
   (jetty/run-jetty
-   handler
+   (wrap-nocache handler)
    {:port 3000
     :join? false}))
