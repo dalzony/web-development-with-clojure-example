@@ -11,11 +11,23 @@
         (:remote-addr request)
         "</body></html>")))
 
-(def handler
-  (compojure/routes
-   (compojure/GET "/" request response-handler)
-   (compojure/GET "/:id" [id] (str "<p>the id is: " id "</p>"))
-   (compojure/POST "/json" [id] (response/ok {:result id}))))
+(defn display-profile [id]
+  )
+
+(defn display-settings [id]
+  )
+
+(defn change-password [id])
+
+(compojure/defroutes user-routes
+  (compojure/GET "/user/:id/profile" [id] (display-profile id))
+  (compojure/GET "/user/:id/settings" [id] (display-settings id))
+  (compojure/GET "/user/:id/change-password" [id] (change-password id)))
+
+(compojure/defroutes handler
+  (compojure/GET "/" request response-handler)
+  (compojure/GET "/:id" [id] (str "<p>the id is: " id "</p>"))
+  (compojure/POST "/json" [id] (response/ok {:result id})))
 
 (defn wrap-nocache [handler]
   (fn [request]
